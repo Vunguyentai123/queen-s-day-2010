@@ -101,16 +101,16 @@
     <!-- Matrix rain background -->
     <canvas id="matrix"></canvas>
     
-    <!-- Audio player (hidden) - Use direct GitHub raw URL -->
+    <!-- Audio player (hidden) - Use Catbox CDN -->
     <audio id="backgroundMusic" loop preload="metadata">
-        <!-- Source 1: GitHub Raw Direct (không qua CDN) -->
+        <!-- Source 1: Catbox.moe (miễn phí, không giới hạn, không CORS) -->
+        <source src="https://files.catbox.moe/6sqh8k.mp3" type="audio/mpeg">
+        
+        <!-- Source 2: GitHub Raw (backup) -->
         <source src="https://github.com/Vunguyentai123/queen-s-day-2010/raw/main/music.mp3" type="audio/mpeg">
         
-        <!-- Source 2: jsDelivr CDN (backup) -->
-        <source src="https://cdn.jsdelivr.net/gh/Vunguyentai123/queen-s-day-2010@main/music.mp3" type="audio/mpeg">
-        
-        <!-- Source 3: GitHub Pages (nếu đã enable) -->
-        <source src="https://vunguyentai123.github.io/queen-s-day-2010/music.mp3" type="audio/mpeg">
+        <!-- Source 3: Local file (cho localhost/WiFi) -->
+        <source src="music.mp3" type="audio/mpeg">
         
         Your browser does not support the audio element.
     </audio>
