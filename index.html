@@ -101,13 +101,13 @@
     <!-- Matrix rain background -->
     <canvas id="matrix"></canvas>
     
-    <!-- Audio player (hidden) - Dùng local file cho WiFi, backup online -->
+    <!-- Audio player (hidden) - Dùng GitHub Pages -->
     <audio id="backgroundMusic" loop preload="auto">
-        <!-- Source 1: Local file (chỉ chạy qua WiFi/localhost) -->
-        <source src="music.mp3" type="audio/mpeg">
+        <!-- Source 1: GitHub Pages (chạy được mọi nơi) -->
+        <source src="https://vunguyentai123.github.io/queen-s-day-2010/music.mp3" type="audio/mpeg">
         
-        <!-- Backup source 2: Free music online (cho Ngrok) -->
-        <source src="https://cdn.pixabay.com/download/audio/2022/03/10/audio_d1718ab41b.mp3" type="audio/mpeg">
+        <!-- Backup source 2: Local file (cho localhost) -->
+        <source src="music.mp3" type="audio/mpeg">
         
         Your browser does not support the audio element.
     </audio>
