@@ -81,13 +81,10 @@
     </div>
     
     <!-- Modal with animations -->
-    <div class="modal hidden" id="modal">
-        <div class="modal-content">
-            <button class="close-btn" onclick="closeModal()">✕</button>
-            <div class="hologram">
-                <div class="hologram-text" id="modalText"></div>
-            </div>
-            <div class="signature">~ With Love & Respect ~</div>
+    <div id="modal" class="modal hidden" onclick="if(event.target.id === 'modal') closeModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div id="modalText" style="transition: opacity 0.2s ease;"></div>
+            <button id="messageNavBtn" class="message-nav-btn" onclick="nextMessage()">→</button>
         </div>
     </div>
     

@@ -233,6 +233,9 @@ function explodeConfetti() {
 }
 
 // Show message modal
+
+let currentMessageIndex = 0;
+
 function showMessage() {
     const modal = document.getElementById('modal');
     const modalText = document.getElementById('modalText');
@@ -244,18 +247,83 @@ function showMessage() {
         "YOU ARE UNSTOPPABLE! 🔥<br>Không có giới hạn nào cho sức mạnh của bạn!"
     ];
     
-    const randomMessage = messages[Math.floor(Math.random() * messages.length)];
-    modalText.innerHTML = randomMessage;
+    // Reset về tin nhắn đầu tiên
+    currentMessageIndex = 0;
+    
+    // Hiển thị tin nhắn đầu tiên
+    modalText.innerHTML = messages[currentMessageIndex];
     modal.classList.remove('hidden');
+    
+    // Hiển thị nút next
+    updateNavigationButton();
     
     // Create particles around modal
     createModalParticles();
 }
 
+function nextMessage() {
+    const modalText = document.getElementById('modalText');
+    
+    const messages = [
+        "Bạn là một QUEEN thực thụ! 👑<br>Mạnh mẽ, tự tin và không gì có thể ngăn cản bạn!",
+        "Hôm nay là ngày của bạn! 💎<br>Hãy tỏa sáng và khiến cả thế giới phải ngước nhìn!",
+        "Phụ nữ như bạn chính là nguồn cảm hứng! ✨<br>Keep being AWESOME!",
+        "YOU ARE UNSTOPPABLE! 🔥<br>Không có giới hạn nào cho sức mạnh của bạn!"
+    ];
+    
+    if (currentMessageIndex < messages.length - 1) {
+        // Chuyển sang tin nhắn tiếp theo
+        currentMessageIndex++;
+        
+        // Hiệu ứng fade
+        modalText.style.opacity = '0';
+        setTimeout(() => {
+            modalText.innerHTML = messages[currentMessageIndex];
+            modalText.style.opacity = '1';
+        }, 200);
+        
+        // Update nút
+        updateNavigationButton();
+    } else {
+        // Hết tin nhắn, đóng modal
+        closeModal();
+    }
+}
+
+function updateNavigationButton() {
+    const messages = [
+        "Bạn là một QUEEN thực thụ! 👑<br>Mạnh mẽ, tự tin và không gì có thể ngăn cản bạn!",
+        "Hôm nay là ngày của bạn! 💎<br>Hãy tỏa sáng và khiến cả thế giới phải ngước nhìn!",
+        "Phụ nữ như bạn chính là nguồn cảm hứng! ✨<br>Keep being AWESOME!",
+        "YOU ARE UNSTOPPABLE! 🔥<br>Không có giới hạn nào cho sức mạnh của bạn!"
+    ];
+    
+    const navButton = document.getElementById('messageNavBtn');
+    
+    if (!navButton) return;
+    
+    if (currentMessageIndex < messages.length - 1) {
+        // Còn tin nhắn tiếp theo - hiện mũi tên
+        navButton.innerHTML = '→';
+        navButton.style.bottom = '20px';
+        navButton.style.right = '20px';
+        navButton.style.top = 'auto';
+    } else {
+        // Hết tin nhắn - chuyển thành X ở góc trên
+        navButton.innerHTML = '✕';
+        navButton.style.top = '20px';
+        navButton.style.right = '20px';
+        navButton.style.bottom = 'auto';
+    }
+}
+
 function closeModal() {
     const modal = document.getElementById('modal');
     modal.classList.add('hidden');
+    currentMessageIndex = 0; // Reset
 }
+
+// ...existing code...
 
 function createModalParticles() {
     const emojis = ['👑', '💎', '✨', '🌟', '💖', '🔥', '💫'];

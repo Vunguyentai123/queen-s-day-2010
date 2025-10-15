@@ -483,8 +483,9 @@ body {
 
 .modal-content {
     position: relative;
-    max-width: 600px;
-    padding: 60px 40px;
+    max-width: 700px;
+    width: 90%;
+    padding: 60px 50px 100px 50px; /* Tăng padding bottom để chừa chỗ cho nút */
     background: linear-gradient(135deg, 
         rgba(131, 56, 236, 0.2) 0%, 
         rgba(255, 0, 110, 0.2) 100%);
@@ -554,11 +555,12 @@ body {
 }
 
 .hologram-text {
-    font-size: 1.5em;
-    line-height: 2;
+    font-size: 1.8em; /* Tăng size chữ */
+    line-height: 2.2; /* Tăng line height */
     color: var(--neon-blue);
     text-shadow: 0 0 10px var(--neon-blue);
     text-align: center;
+    margin-bottom: 60px; /* Tạo khoảng cách với nút */
 }
 
 .signature {
@@ -766,3 +768,63 @@ body {
     }
 }
 
+/* ...existing code... */
+
+.message-nav-btn {
+    position: absolute;
+    bottom: 25px;
+    right: 25px;
+    background: linear-gradient(135deg, #ff006e, #8338ec);
+    border: 2px solid #00f5ff;
+    color: white;
+    font-size: 2.2em; /* Tăng size icon */
+    width: 65px; /* Tăng kích thước nút */
+    height: 65px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 20px rgba(255, 0, 110, 0.8);
+    transition: all 0.3s ease;
+    z-index: 1002; /* Tăng z-index */
+}
+
+.message-nav-btn:hover {
+    transform: scale(1.15) rotate(15deg);
+    box-shadow: 0 0 40px rgba(255, 0, 110, 1);
+}
+
+.message-nav-btn:active {
+    transform: scale(0.9);
+}
+
+#modalText {
+    transition: opacity 0.2s ease;
+    min-height: 120px; /* Đảm bảo chiều cao tối thiểu */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 20px;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .modal-content {
+        padding: 50px 30px 100px 30px;
+        max-width: 95%;
+    }
+    
+    .hologram-text {
+        font-size: 1.4em;
+        line-height: 2;
+    }
+    
+    .message-nav-btn {
+        width: 55px;
+        height: 55px;
+        font-size: 1.8em;
+        bottom: 20px;
+        right: 20px;
+    }
+}
