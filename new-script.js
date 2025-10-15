@@ -304,11 +304,34 @@ document.addEventListener('DOMContentLoaded', () => {
     if (audio) {
         audio.addEventListener('error', (e) => {
             console.error('❌ Audio error:', e);
-            createNotification('❌ Không thể tải nhạc! Kiểm tra file music.mp3');
+            console.error('Audio error code:', audio.error?.code);
+            console.error('Audio error message:', audio.error?.message);
+            console.error('Current src:', audio.currentSrc);
+            
+            let errorMsg = 'Lỗi tải nhạc';
+            if (audio.error) {
+                switch(audio.error.code) {
+                    case 1: errorMsg = 'Tải file bị hủy'; break;
+                    case 2: errorMsg = 'Lỗi mạng khi tải'; break;
+                    case 3: errorMsg = 'File nhạc bị lỗi'; break;
+                    case 4: errorMsg = 'Không tìm thấy file'; break;
+                }
+            }
+            createNotification('❌ ' + errorMsg + ' - Thử lại...');
         });
         
         audio.addEventListener('loadeddata', () => {
             console.log('✅ Music loaded successfully');
+            console.log('Duration:', audio.duration);
+            console.log('Source:', audio.currentSrc);
+        });
+        
+        audio.addEventListener('loadstart', () => {
+            console.log('🔄 Loading audio from:', audio.currentSrc);
+        });
+        
+        audio.addEventListener('canplay', () => {
+            console.log('✅ Audio can play - ready!');
         });
     }
 });
@@ -321,26 +344,58 @@ function playMusic() {
     }
     
     if (!musicPlaying) {
-        // Play music
-        audio.play().then(() => {
-            // Show control panel
-            musicControl.classList.remove('hidden');
-            
-            // Update button
-            const btn = document.getElementById('musicBtn');
-            if (btn) {
-                btn.querySelector('.btn-text').textContent = '⏸️ PAUSE';
-                btn.querySelector('.btn-glitch').textContent = '⏸️ PAUSE';
-            }
-            
-            musicPlaying = true;
-            startVisualizer();
-            createNotification('🎵 Music Playing!');
-            console.log('✅ Music started');
-        }).catch(error => {
-            console.error('❌ Error playing music:', error);
-            createNotification('❌ Lỗi: ' + error.message);
-        });
+        console.log('📱 Attempting to play music...');
+        console.log('Audio src:', audio.src);
+        console.log('Audio readyState:', audio.readyState);
+        console.log('Audio networkState:', audio.networkState);
+        
+        // Try to load first
+        audio.load();
+        
+        // Play music with better error handling
+        const playPromise = audio.play();
+        
+        if (playPromise !== undefined) {
+            playPromise.then(() => {
+                // Show control panel
+                musicControl.classList.remove('hidden');
+                
+                // Update button
+                const btn = document.getElementById('musicBtn');
+                if (btn) {
+                    btn.querySelector('.btn-text').textContent = '⏸️ PAUSE';
+                    btn.querySelector('.btn-glitch').textContent = '⏸️ PAUSE';
+                }
+                
+                musicPlaying = true;
+                startVisualizer();
+                createNotification('🎵 Music Playing!');
+                console.log('✅ Music started successfully');
+            }).catch(error => {
+                console.error('❌ Error playing music:', error);
+                console.error('Error name:', error.name);
+                console.error('Error message:', error.message);
+                
+                let errorMsg = '❌ Không thể phát nhạc!\n\n';
+                
+                if (error.name === 'NotAllowedError') {
+                    errorMsg += '📱 Trình duyệt chặn autoplay\n' +
+                               '✅ Giải pháp: Click nút MUSIC lần nữa';
+                    createNotification('📱 Click lại nút MUSIC để phát nhạc');
+                } else if (error.name === 'NotSupportedError') {
+                    errorMsg += '❌ File nhạc không được hỗ trợ';
+                    createNotification('❌ File nhạc không hỗ trợ');
+                } else if (error.name === 'AbortError') {
+                    errorMsg += '⏸️ Đang tải nhạc, vui lòng đợi...';
+                    createNotification('⏳ Đang tải nhạc...');
+                } else {
+                    errorMsg += '❌ Lỗi: ' + error.message;
+                    createNotification('❌ Lỗi: ' + error.message);
+                }
+                
+                console.error(errorMsg);
+            });
+        }
     } else {
         // Pause music
         togglePlayPause();
