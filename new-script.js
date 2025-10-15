@@ -277,6 +277,7 @@ function createModalParticles() {
 let musicPlaying = false;
 let audio = null;
 let musicControl = null;
+let firstInteraction = true; // Track first user interaction
 
 // Wait for DOM
 document.addEventListener('DOMContentLoaded', () => {
@@ -287,6 +288,17 @@ document.addEventListener('DOMContentLoaded', () => {
     if (audio) {
         audio.volume = 0.8;
     }
+    
+    // Preload audio on first user interaction
+    document.addEventListener('click', function initAudio() {
+        if (audio && firstInteraction) {
+            console.log('🎯 First interaction detected - initializing audio context');
+            audio.load();
+            firstInteraction = false;
+            // Remove listener after first interaction
+            document.removeEventListener('click', initAudio);
+        }
+    }, { once: true });
     
     // Volume slider
     const volumeSlider = document.getElementById('volumeSlider');
@@ -317,7 +329,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     case 4: errorMsg = 'Không tìm thấy file'; break;
                 }
             }
-            createNotification('❌ ' + errorMsg + ' - Thử lại...');
+            createNotification('❌ ' + errorMsg + ' - Đang thử source khác...');
         });
         
         audio.addEventListener('loadeddata', () => {
