@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>✨ QUEEN'S DAY 20/10 ✨</title>
+    <link rel="stylesheet" href="new-style.css">
+</head>
+<body>
+    <!-- Cursor trail effect -->
+    <canvas id="canvas"></canvas>
+    
+    <!-- Background particles -->
+    <div class="particles" id="particles"></div>
+    
+    <!-- Neon lights -->
+    <div class="neon-border"></div>
+    
+    <!-- Main container -->
+    <div class="galaxy-container">
+        
+        <!-- Interactive 3D card -->
+        <div class="scene">
+            <div class="card-3d" id="card3d">
+                
+                <!-- Glitch title -->
+                <h1 class="glitch-title" data-text="QUEEN'S">QUEEN'S</h1>
+                <h1 class="glitch-title delay" data-text="DAY">DAY</h1>
+                <div class="date-badge">20/10</div>
+                
+                <!-- Animated quote -->
+                <div class="quote-container">
+                    <div class="quote-line"></div>
+                    <p class="animated-quote" id="quote"></p>
+                    <div class="quote-line"></div>
+                </div>
+                
+                <!-- Interactive buttons -->
+                <div class="button-group">
+                    <button class="cyber-btn" onclick="explodeConfetti()">
+                        <span class="btn-text">🎆 FIREWORKS</span>
+                        <span class="btn-glitch">🎆 FIREWORKS</span>
+                    </button>
+                    
+                    <button class="cyber-btn" id="musicBtn" onclick="playMusic()">
+                        <span class="btn-text">🎵 MUSIC</span>
+                        <span class="btn-glitch">🎵 MUSIC</span>
+                    </button>
+                    
+                    <button class="cyber-btn" onclick="showMessage()">
+                        <span class="btn-text">💌 MESSAGE</span>
+                        <span class="btn-glitch">💌 MESSAGE</span>
+                    </button>
+                </div>
+                
+                <!-- Volume Control -->
+                <div class="volume-control">
+                    <label>🔊 Volume:</label>
+                    <input type="range" id="volumeSlider" min="0" max="100" value="80" />
+                    <span id="volumeValue">80%</span>
+                </div>
+                
+                <!-- Stats counter -->
+                <div class="stats">
+                    <div class="stat-item">
+                        <div class="stat-value" id="strength">0</div>
+                        <div class="stat-label">STRENGTH</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="beauty">0</div>
+                        <div class="stat-label">BEAUTY</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="power">0</div>
+                        <div class="stat-label">POWER</div>
+                    </div>
+                </div>
+                
+                <!-- Hidden Easter egg -->
+                <div class="easter-egg" onclick="activateEasterEgg()">
+                    <span>👑</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Floating elements -->
+        <div class="floating-emojis" id="floatingEmojis"></div>
+    </div>
+    
+    <!-- Modal with animations -->
+    <div class="modal hidden" id="modal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal()">✕</button>
+            <div class="hologram">
+                <div class="hologram-text" id="modalText"></div>
+            </div>
+            <div class="signature">~ With Love & Respect ~</div>
+        </div>
+    </div>
+    
+    <!-- Matrix rain background -->
+    <canvas id="matrix"></canvas>
+    
+    <!-- Audio player (hidden) - Dùng local file cho WiFi, backup online -->
+    <audio id="backgroundMusic" loop preload="auto">
+        <!-- Source 1: Local file (chỉ chạy qua WiFi/localhost) -->
+        <source src="music.mp3" type="audio/mpeg">
+        
+        <!-- Backup source 2: Free music online (cho Ngrok) -->
+        <source src="https://cdn.pixabay.com/download/audio/2022/03/10/audio_d1718ab41b.mp3" type="audio/mpeg">
+        
+        Your browser does not support the audio element.
+    </audio>
+    
+    <!-- Mini Music Control - Hiện góc màn hình khi đang phát -->
+    <div class="music-control hidden" id="musicControl">
+        <div class="control-content">
+            <span class="music-icon">🎵</span>
+            <div class="music-info">
+                <div class="music-title">Queen's Anthem</div>
+                <div class="music-status">Now Playing...</div>
+            </div>
+            <div class="control-buttons">
+                <button class="control-btn" onclick="togglePlayPause()" id="playPauseBtn">⏸️</button>
+                <button class="control-btn" onclick="stopMusic()">⏹️</button>
+            </div>
+        </div>
+        <div class="volume-bar">
+            <span class="volume-icon">🔊</span>
+            <input type="range" id="volumeSlider" min="0" max="100" value="80" class="volume-slider">
+            <span class="volume-text" id="volumeValue">80%</span>
+        </div>
+    </div>
+    
+    <script src="new-script.js"></script>
+</body>
+</html>
