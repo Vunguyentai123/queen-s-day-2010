@@ -102,20 +102,21 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    padding-top: 40px;
 }
 
 /* 3D Card */
 .card-3d {
     position: relative;
     width: 600px;
-    min-height: 700px;
+    min-height: 750px;
     background: linear-gradient(135deg, 
         rgba(131, 56, 236, 0.1) 0%, 
         rgba(255, 0, 110, 0.1) 50%,
         rgba(0, 245, 255, 0.1) 100%);
     backdrop-filter: blur(20px);
     border-radius: 30px;
-    padding: 60px 40px;
+    padding: 70px 40px 50px 40px;
     border: 2px solid rgba(255, 255, 255, 0.1);
     box-shadow: 
         0 0 60px rgba(255, 0, 110, 0.3),
@@ -320,7 +321,7 @@ body {
 .stats {
     display: flex;
     justify-content: space-around;
-    margin: 40px 0;
+    margin: 40px 0 20px 0;
     gap: 20px;
 }
 
@@ -777,8 +778,8 @@ body {
     background: linear-gradient(135deg, #ff006e, #8338ec);
     border: 2px solid #00f5ff;
     color: white;
-    font-size: 2.2em; /* Tăng size icon */
-    width: 65px; /* Tăng kích thước nút */
+    font-size: 2.2em;
+    width: 65px;
     height: 65px;
     border-radius: 50%;
     cursor: pointer;
@@ -787,11 +788,14 @@ body {
     justify-content: center;
     box-shadow: 0 0 20px rgba(255, 0, 110, 0.8);
     transition: all 0.3s ease;
-    z-index: 1002; /* Tăng z-index */
+    z-index: 1002;
+    line-height: 1;
+    padding: 0;
+    text-align: center;
 }
 
 .message-nav-btn:hover {
-    transform: scale(1.15) rotate(15deg);
+    transform: scale(1.15);
     box-shadow: 0 0 40px rgba(255, 0, 110, 1);
 }
 

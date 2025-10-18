@@ -3,7 +3,7 @@ const path = require('path');
 const os = require('os');
 
 const app = express();
-const PORT = 3000;
+const PORT = 3010;
 
 // Add headers for audio streaming
 app.use((req, res, next) => {
@@ -45,7 +45,7 @@ function getLocalIP() {
 app.listen(PORT, '0.0.0.0', () => {
     const localIP = getLocalIP();
     console.log('\n🎉 ================================');
-    console.log('✨ QUEEN\'S DAY SERVER RUNNING! ✨');
+    console.log('✨ WOMEN\'S DAY SERVER RUNNING! ✨');
     console.log('================================ 🎉\n');
     console.log('📍 Truy cập từ máy này:');
     console.log(`   👉 http://localhost:${PORT}`);

@@ -1,7 +1,7 @@
 // Quotes for animation
 const quotes = [
     "💎 BE BOLD. BE BEAUTIFUL. BE YOU. 💎",
-    "✨ QUEENS DON'T COMPETE ✨",
+    "✨ WOMEN DON'T COMPETE ✨",
     "👑 CROWN YOURSELF 👑",
     "💫 UNSTOPPABLE ENERGY 💫",
     "🌟 SHINE LIKE A STAR 🌟",
@@ -26,7 +26,7 @@ function typeWriter(text, element, speed = 50) {
         } else {
             clearInterval(interval);
             isTyping = false;
-            setTimeout(nextQuote, 3000);
+            setTimeout(nextQuote, 3010);
         }
     }, speed);
 }
@@ -45,7 +45,7 @@ function initMatrix() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     
-    const letters = '01👑💎✨🌸💖';
+    const letters = '01�💎✨🌸💖';
     const fontSize = 16;
     const columns = canvas.width / fontSize;
     const drops = Array(Math.floor(columns)).fill(1);
@@ -161,78 +161,84 @@ function init3DCard() {
     });
 }
 
-// Counter animation
-function animateCounter(id, target, duration = 2000) {
-    const element = document.getElementById(id);
-    const start = 0;
-    const increment = target / (duration / 16);
-    let current = start;
-    
-    const timer = setInterval(() => {
-        current += increment;
-        if (current >= target) {
-            element.textContent = target;
-            clearInterval(timer);
-        } else {
-            element.textContent = Math.floor(current);
-        }
-    }, 16);
-}
-
-// Fireworks effect
 function explodeConfetti() {
-    const count = 100;
-    const colors = ['#ff006e', '#00f5ff', '#8338ec', '#ffbe0b', '#ff9800'];
+    const count = 60;
+    const flowerEmojis = ['🌸', '🌺', '🌻', '🌼', '🌷', '💐', '🏵️', '🌹', '💮'];
+    const hearts = ['💖', '💗', '💓', '💕', '💝'];
+    const sparkles = ['✨', '⭐', '🌟', '💫'];
+    const allEmojis = [...flowerEmojis, ...hearts, ...sparkles];
+    
+    const fragment = document.createDocumentFragment();
+    const confettiElements = [];
     
     for (let i = 0; i < count; i++) {
         const confetti = document.createElement('div');
-        confetti.style.position = 'fixed';
-        confetti.style.left = '50%';
-        confetti.style.top = '50%';
-        confetti.style.width = '10px';
-        confetti.style.height = '10px';
-        confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-        confetti.style.borderRadius = '50%';
-        confetti.style.pointerEvents = 'none';
-        confetti.style.zIndex = '10000';
-        
-        document.body.appendChild(confetti);
+        confetti.textContent = allEmojis[Math.floor(Math.random() * allEmojis.length)];
+        confetti.style.cssText = `
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            font-size: ${Math.random() * 20 + 25}px;
+            pointer-events: none;
+            z-index: 10000;
+            user-select: none;
+            will-change: transform, opacity;
+        `;
         
         const angle = (Math.PI * 2 * i) / count;
-        const velocity = 10 + Math.random() * 10;
-        const vx = Math.cos(angle) * velocity;
-        const vy = Math.sin(angle) * velocity;
+        const velocity = 15 + Math.random() * 12;
         
-        let x = 0;
-        let y = 0;
-        let opacity = 1;
+        confettiElements.push({
+            element: confetti,
+            vx: Math.cos(angle) * velocity,
+            vy: Math.sin(angle) * velocity,
+            x: 0,
+            y: 0,
+            rotation: Math.random() * 360,
+            rotationSpeed: (Math.random() - 0.5) * 18,
+            opacity: 1
+        });
         
-        const animate = () => {
-            x += vx;
-            y += vy + 0.5;
-            opacity -= 0.02;
-            
-            confetti.style.transform = `translate(${x}px, ${y}px)`;
-            confetti.style.opacity = opacity;
-            
-            if (opacity > 0) {
-                requestAnimationFrame(animate);
-            } else {
-                confetti.remove();
-            }
-        };
-        
-        animate();
+        fragment.appendChild(confetti);
     }
     
-    // Add screen shake
+    document.body.appendChild(fragment);
+    
+    const animate = () => {
+        let activeCount = 0;
+        
+        confettiElements.forEach(item => {
+            if (item.opacity <= 0) return;
+            
+            item.vx *= 0.985;
+            item.vy += 0.6;
+            item.x += item.vx;
+            item.y += item.vy;
+            item.rotation += item.rotationSpeed;
+            item.opacity -= 0.0095;
+            
+            item.element.style.transform = `translate(${item.x}px, ${item.y}px) rotate(${item.rotation}deg)`;
+            item.element.style.opacity = item.opacity;
+            
+            if (item.opacity > 0 && item.y < window.innerHeight + 100) {
+                activeCount++;
+            } else {
+                item.element.remove();
+            }
+        });
+        
+        if (activeCount > 0) {
+            requestAnimationFrame(animate);
+        }
+    };
+    
+    requestAnimationFrame(animate);
+    
     document.body.style.animation = 'shake 0.5s';
     setTimeout(() => {
         document.body.style.animation = '';
     }, 500);
 }
-
-// Show message modal
 
 let currentMessageIndex = 0;
 
@@ -241,23 +247,19 @@ function showMessage() {
     const modalText = document.getElementById('modalText');
     
     const messages = [
-        "Bạn là một QUEEN thực thụ! 👑<br>Mạnh mẽ, tự tin và không gì có thể ngăn cản bạn!",
+        "Bạn là một WOMAN thực thụ! 👑<br>Mạnh mẽ, tự tin và không gì có thể ngăn cản bạn!",
         "Hôm nay là ngày của bạn! 💎<br>Hãy tỏa sáng và khiến cả thế giới phải ngước nhìn!",
         "Phụ nữ như bạn chính là nguồn cảm hứng! ✨<br>Keep being AWESOME!",
         "YOU ARE UNSTOPPABLE! 🔥<br>Không có giới hạn nào cho sức mạnh của bạn!"
     ];
     
-    // Reset về tin nhắn đầu tiên
     currentMessageIndex = 0;
     
-    // Hiển thị tin nhắn đầu tiên
     modalText.innerHTML = messages[currentMessageIndex];
     modal.classList.remove('hidden');
     
-    // Hiển thị nút next
     updateNavigationButton();
     
-    // Create particles around modal
     createModalParticles();
 }
 
@@ -265,34 +267,30 @@ function nextMessage() {
     const modalText = document.getElementById('modalText');
     
     const messages = [
-        "Bạn là một QUEEN thực thụ! 👑<br>Mạnh mẽ, tự tin và không gì có thể ngăn cản bạn!",
+        "Bạn là một WOMAN thực thụ! 👑<br>Mạnh mẽ, tự tin và không gì có thể ngăn cản bạn!",
         "Hôm nay là ngày của bạn! 💎<br>Hãy tỏa sáng và khiến cả thế giới phải ngước nhìn!",
         "Phụ nữ như bạn chính là nguồn cảm hứng! ✨<br>Keep being AWESOME!",
         "YOU ARE UNSTOPPABLE! 🔥<br>Không có giới hạn nào cho sức mạnh của bạn!"
     ];
     
     if (currentMessageIndex < messages.length - 1) {
-        // Chuyển sang tin nhắn tiếp theo
         currentMessageIndex++;
         
-        // Hiệu ứng fade
         modalText.style.opacity = '0';
         setTimeout(() => {
             modalText.innerHTML = messages[currentMessageIndex];
             modalText.style.opacity = '1';
         }, 200);
         
-        // Update nút
         updateNavigationButton();
     } else {
-        // Hết tin nhắn, đóng modal
         closeModal();
     }
 }
 
 function updateNavigationButton() {
     const messages = [
-        "Bạn là một QUEEN thực thụ! 👑<br>Mạnh mẽ, tự tin và không gì có thể ngăn cản bạn!",
+        "Bạn là một WOMAN thực thụ! 👑<br>Mạnh mẽ, tự tin và không gì có thể ngăn cản bạn!",
         "Hôm nay là ngày của bạn! 💎<br>Hãy tỏa sáng và khiến cả thế giới phải ngước nhìn!",
         "Phụ nữ như bạn chính là nguồn cảm hứng! ✨<br>Keep being AWESOME!",
         "YOU ARE UNSTOPPABLE! 🔥<br>Không có giới hạn nào cho sức mạnh của bạn!"
@@ -303,13 +301,11 @@ function updateNavigationButton() {
     if (!navButton) return;
     
     if (currentMessageIndex < messages.length - 1) {
-        // Còn tin nhắn tiếp theo - hiện mũi tên
         navButton.innerHTML = '→';
         navButton.style.bottom = '20px';
         navButton.style.right = '20px';
         navButton.style.top = 'auto';
     } else {
-        // Hết tin nhắn - chuyển thành X ở góc trên
         navButton.innerHTML = '✕';
         navButton.style.top = '20px';
         navButton.style.right = '20px';
@@ -320,10 +316,8 @@ function updateNavigationButton() {
 function closeModal() {
     const modal = document.getElementById('modal');
     modal.classList.add('hidden');
-    currentMessageIndex = 0; // Reset
+    currentMessageIndex = 0;
 }
-
-// ...existing code...
 
 function createModalParticles() {
     const emojis = ['👑', '💎', '✨', '🌟', '💖', '🔥', '💫'];
@@ -341,13 +335,11 @@ function createModalParticles() {
     }
 }
 
-// HTML5 Audio Player - Chỉ phát nhạc, không video
 let musicPlaying = false;
 let audio = null;
 let musicControl = null;
-let firstInteraction = true; // Track first user interaction
+let firstInteraction = true;
 
-// Wait for DOM
 document.addEventListener('DOMContentLoaded', () => {
     audio = document.getElementById('backgroundMusic');
     musicControl = document.getElementById('musicControl');
@@ -357,18 +349,15 @@ document.addEventListener('DOMContentLoaded', () => {
         audio.volume = 0.8;
     }
     
-    // Preload audio on first user interaction
     document.addEventListener('click', function initAudio() {
         if (audio && firstInteraction) {
             console.log('🎯 First interaction detected - initializing audio context');
             audio.load();
             firstInteraction = false;
-            // Remove listener after first interaction
             document.removeEventListener('click', initAudio);
         }
     }, { once: true });
     
-    // Volume slider
     const volumeSlider = document.getElementById('volumeSlider');
     const volumeValue = document.getElementById('volumeValue');
     
@@ -380,7 +369,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     
-    // Audio error handling
     if (audio) {
         audio.addEventListener('error', (e) => {
             console.error('❌ Audio error:', e);
@@ -429,18 +417,14 @@ function playMusic() {
         console.log('Audio readyState:', audio.readyState);
         console.log('Audio networkState:', audio.networkState);
         
-        // Try to load first
         audio.load();
         
-        // Play music with better error handling
         const playPromise = audio.play();
         
         if (playPromise !== undefined) {
             playPromise.then(() => {
-                // Show control panel
                 musicControl.classList.remove('hidden');
                 
-                // Update button
                 const btn = document.getElementById('musicBtn');
                 if (btn) {
                     btn.querySelector('.btn-text').textContent = '⏸️ PAUSE';
@@ -448,7 +432,6 @@ function playMusic() {
                 }
                 
                 musicPlaying = true;
-                startVisualizer();
                 createNotification('🎵 Music Playing!');
                 console.log('✅ Music started successfully');
             }).catch(error => {
@@ -477,7 +460,6 @@ function playMusic() {
             });
         }
     } else {
-        // Pause music
         togglePlayPause();
     }
 }
@@ -494,7 +476,6 @@ function togglePlayPause() {
             btn.querySelector('.btn-glitch').textContent = '⏸️ PAUSE';
         }
         musicPlaying = true;
-        startVisualizer();
         createNotification('▶️ Music Resumed');
     } else {
         audio.pause();
@@ -512,14 +493,11 @@ function togglePlayPause() {
 function stopMusic() {
     if (!audio || !musicControl) return;
     
-    // Stop music
     audio.pause();
     audio.currentTime = 0;
     
-    // Hide control panel
     musicControl.classList.add('hidden');
     
-    // Reset button
     const btn = document.getElementById('musicBtn');
     if (btn) {
         btn.querySelector('.btn-text').textContent = '🎵 MUSIC';
@@ -528,17 +506,12 @@ function stopMusic() {
     
     document.getElementById('playPauseBtn').textContent = '▶️';
     
-    // Stop visualizer
     musicPlaying = false;
-    document.getElementById('strength').textContent = '100';
-    document.getElementById('beauty').textContent = '100';
-    document.getElementById('power').textContent = '100';
     
     createNotification('⏹️ Music Stopped');
     console.log('⏹️ Music stopped');
 }
 
-// Create notification
 function createNotification(message) {
     const notification = document.createElement('div');
     notification.textContent = message;
@@ -565,7 +538,6 @@ function createNotification(message) {
     }, 2000);
 }
 
-// Add animation styles
 const notificationStyle = document.createElement('style');
 notificationStyle.textContent = `
     @keyframes slideIn {
@@ -579,32 +551,6 @@ notificationStyle.textContent = `
 `;
 document.head.appendChild(notificationStyle);
 
-function startVisualizer() {
-    const stats = document.querySelectorAll('.stat-value');
-    let animationId;
-    
-    function animate() {
-        if (!musicPlaying) {
-            // Reset về giá trị ban đầu
-            stats.forEach(stat => stat.textContent = '100');
-            cancelAnimationFrame(animationId);
-            return;
-        }
-        
-        stats.forEach(stat => {
-            const current = parseInt(stat.textContent);
-            const change = Math.floor(Math.random() * 15) - 7;
-            const newValue = Math.max(90, Math.min(100, current + change));
-            stat.textContent = newValue;
-        });
-        
-        animationId = requestAnimationFrame(animate);
-    }
-    
-    animate();
-}
-
-// Easter egg
 let clickCount = 0;
 function activateEasterEgg() {
     clickCount++;
@@ -612,7 +558,6 @@ function activateEasterEgg() {
     if (clickCount === 5) {
         alert('🎊 ULTRA SECRET UNLOCKED! 🎊\n\nBạn đã tìm ra bí mật!\nBạn là một LEGEND! 👑✨');
         
-        // Rainbow effect
         document.body.style.animation = 'rainbow 2s infinite';
         
         setTimeout(() => {
@@ -622,28 +567,27 @@ function activateEasterEgg() {
     }
 }
 
-// Floating particles background
 function createParticles() {
     const container = document.getElementById('particles');
-    const particleCount = 50;
+    const particleCount = 100;
+    const emojis = ['🌸', '💐', '✨', '💖', '💎', '🌺', '🦋'];
     
     for (let i = 0; i < particleCount; i++) {
         const particle = document.createElement('div');
         particle.style.position = 'absolute';
-        particle.style.width = Math.random() * 3 + 'px';
-        particle.style.height = particle.style.width;
-        particle.style.background = 'rgba(255, 255, 255, 0.5)';
-        particle.style.borderRadius = '50%';
+        particle.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+        particle.style.fontSize = (Math.random() * 15 + 10) + 'px';
+        particle.style.opacity = '0.6';
         particle.style.left = Math.random() * 100 + '%';
         particle.style.top = Math.random() * 100 + '%';
         particle.style.animation = `float ${Math.random() * 10 + 10}s linear infinite`;
         particle.style.animationDelay = Math.random() * 5 + 's';
+        particle.style.pointerEvents = 'none';
         
         container.appendChild(particle);
     }
 }
 
-// Shake animation for body
 const style = document.createElement('style');
 style.textContent = `
     @keyframes shake {
@@ -659,30 +603,20 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 
-// Initialize everything when page loads
 window.addEventListener('load', () => {
     typeWriter(quotes[0], document.getElementById('quote'));
     initMatrix();
     initCursorTrail();
     init3DCard();
     createParticles();
-    
-    // Animate stats
-    setTimeout(() => {
-        animateCounter('strength', 100, 2000);
-        animateCounter('beauty', 100, 2500);
-        animateCounter('power', 100, 3000);
-    }, 500);
 });
 
-// Close modal on click outside
 document.getElementById('modal')?.addEventListener('click', (e) => {
     if (e.target.id === 'modal') {
         closeModal();
     }
 });
 
-// Resize handler
 window.addEventListener('resize', () => {
     const canvas = document.getElementById('canvas');
     const matrix = document.getElementById('matrix');
